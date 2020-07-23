@@ -1,0 +1,217 @@
+sebatapiaoviedo=# CREATE DATABASE pelìculas;
+CREATE DATABASE
+sebatapiaoviedo=# CREATE TABLE peliculas (
+sebatapiaoviedo(# id SERIAL PRIMARY KEY,
+sebatapiaoviedo(# título VARCHAR,
+sebatapiaoviedo(# año_estreno INT,
+sebatapiaoviedo(# director VARCHAR
+sebatapiaoviedo(# );
+CREATE TABLE
+sebatapiaoviedo=# SELECT * FROM peliculas;
+ id | título | año_estreno | director 
+----+--------+-------------+----------
+(0 rows)
+
+sebatapiaoviedo=# CREATE TABLE reparto;
+ERROR:  syntax error at or near ";"
+LINE 1: CREATE TABLE reparto;
+                            ^
+sebatapiaoviedo=# CREATE TABLE reparto (
+sebatapiaoviedo(# id SERIAL PRIMARY KEY,
+sebatapiaoviedo(# pelicula_id INT,
+sebatapiaoviedo(# nombre_actor VARCHAR,
+sebatapiaoviedo(# FOREIGN KEY (pelicula_id) REFERENCES peliculas (id)
+sebatapiaoviedo(# );
+CREATE TABLE
+sebatapiaoviedo=# \copy peliculas 'C:\Users\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+\copy: parse error at "'C:\Users\Escritorio\apoyodesafio2\peliculas"
+sebatapiaoviedo=# \q
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~$ pwd
+/home/sebatapiaoviedo
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~$ cd Escritorio/
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~/Escritorio$ cd apoyodesafio2/
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~/Escritorio/apoyodesafio2$ cd ..
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~/Escritorio$ cd ..
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~$ pwd
+/home/sebatapiaoviedo
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~$ psql
+psql (12.2 (Ubuntu 12.2-4))
+Type "help" for help.
+
+sebatapiaoviedo=# SELECT * FROM peliculas;
+ id | título | año_estreno | director 
+----+--------+-------------+----------
+(0 rows)
+
+sebatapiaoviedo=# SELECT * FROM reparto;
+ id | pelicula_id | nombre_actor 
+----+-------------+--------------
+sebatapiaoviedo=# \copy peliculas 'C:\Users\home\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+\copy: parse error at "'C:\Users\home\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas"
+sebatapiaoviedo=# \copy peliculas 'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+\copy: parse error at "'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas"
+sebatapiaoviedo=# \copy peliculas 'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+\copy: parse error at "'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas"
+sebatapiaoviedo=# \copy peliculas 'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header
+\copy: parse error at "'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas"
+sebatapiaoviedo=# \copy peliculas FROM 'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv: No existe el archivo o el directorio
+sebatapiaoviedo=# \copy peliculas FROM 'C:\Users\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+C:\Users\Escritorio\apoyodesafio2\peliculas.csv: No existe el archivo o el directorio
+sebatapiaoviedo=# \copy peliculas FROM 'C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+C:\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv: No existe el archivo o el directorio
+sebatapiaoviedo=# \copy peliculas FROM 'C:\Users\home\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+C:\Users\home\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv: No existe el archivo o el directorio
+sebatapiaoviedo=# \copy peliculas FROM '\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv' csv header;
+\Users\sebatapiaoviedo\Escritorio\apoyodesafio2\peliculas.csv: No existe el archivo o el directorio
+sebatapiaoviedo=# \copy peliculas FROM '/Users/sebatapiaoviedo/Escritrio/apoyodesafio2/peliculas.csv' csv header;
+/Users/sebatapiaoviedo/Escritrio/apoyodesafio2/peliculas.csv: No existe el archivo o el directorio
+sebatapiaoviedo=# \copy peliculas FROM '/home/sebatapiaoviedo/Escritrio/apoyodesafio2/peliculas.csv' csv header;
+/home/sebatapiaoviedo/Escritrio/apoyodesafio2/peliculas.csv: No existe el archivo o el directorio
+sebatapiaoviedo=# \copy peliculas FROM '/home/sebatapiaoviedo/Escritorio/apoyodesafio2/peliculas.csv' csv header;
+COPY 100
+sebatapiaoviedo=# \copy reparto (pelicula_id, nombre_actor) FROM '/home/sebatapiaoviedo/Escritorio/apoyodesafio2/reparto.csv' csv;
+COPY 1051
+sebatapiaoviedo=# SELECT * FROM peliculas WHERE peliculas.título = 'Titanic';
+ id | título  | año_estreno |   director    
+----+---------+-------------+---------------
+  2 | Titanic |        1997 | James Cameron
+(1 row)
+
+sebatapiaoviedo=# SELECT * FROM peliculas INNER JOIN reparto ON peliculas.id = reparto.pelicula_id WHERE peliculas.título = 'Titanic';
+ id | título  | año_estreno |   director    | id | pelicula_id |   nombre_actor    
+----+---------+-------------+---------------+----+-------------+-------------------
+  2 | Titanic |        1997 | James Cameron | 17 |           2 | Leonardo DiCaprio
+  2 | Titanic |        1997 | James Cameron | 18 |           2 | Kate Winslet
+  2 | Titanic |        1997 | James Cameron | 19 |           2 | Billy Zane
+  2 | Titanic |        1997 | James Cameron | 20 |           2 | Kathy Bates
+  2 | Titanic |        1997 | James Cameron | 21 |           2 | Frances Fisher
+  2 | Titanic |        1997 | James Cameron | 22 |           2 | Bernard Hill
+  2 | Titanic |        1997 | James Cameron | 23 |           2 | Jonathan Hyde
+  2 | Titanic |        1997 | James Cameron | 24 |           2 | Danny Nucci
+  2 | Titanic |        1997 | James Cameron | 25 |           2 | David Warner
+  2 | Titanic |        1997 | James Cameron | 26 |           2 | Bill Paxton
+  2 | Titanic |        1997 | James Cameron | 27 |           2 | Gloria Stuart
+  2 | Titanic |        1997 | James Cameron | 28 |           2 | Victor Garber
+  2 | Titanic |        1997 | James Cameron | 29 |           2 | Suzy Amis
+(13 rows)
+
+sebatapiaoviedo=# SELECT título FROM peliculas INNER JOIN reparto ON peliculas.id = reparto.pelicula_id WHERE peliculas.título = 'Harrison Ford';
+ título 
+--------
+(0 rows)
+
+sebatapiaoviedo=# SELECT título FROM peliculas INNER JOIN reparto ON peliculas.id = reparto.pelicula_id WHERE reparto.nombre = 'Harrison Ford';
+ERROR:  column reparto.nombre does not exist
+LINE 1: ...parto ON peliculas.id = reparto.pelicula_id WHERE reparto.no...
+                                                             ^
+sebatapiaoviedo=# SELECT título FROM peliculas INNER JOIN reparto ON peliculas.id = reparto.pelicula_id WHERE reparto.nombre_actor = 'Harrison Ford';
+                    título                     
+-----------------------------------------------
+ Star Wars. Episodio IV: Una nueva esperanza
+ Indiana Jones y la última cruzada
+ En busca del arca perdida
+ Star Wars. Episodio V: El imperio contraataca
+ Star Wars. Episodio VI: El retorno del Jedi
+ Blade Runner
+ Apocalypse Now
+ Indiana Jones y el templo maldito
+(8 rows)
+
+sebatapiaoviedo=# SELECT director, COUNT (*) AS cantidad FROM peliculas GROUP BY director;
+sebatapiaoviedo=# 
+sebatapiaoviedo=# SELECT director, COUNT (*) AS cantidad FROM peliculas GROUP BY director ORDER BY cantidad DESC LIMIT 10;
+       director       | cantidad 
+----------------------+----------
+ Steven Spielberg     |        9
+ Francis Ford Coppola |        4
+ Peter Jackson        |        4
+ Quentin Tarantino    |        3
+ Martin Scorsese      |        3
+ Robert Zemeckis      |        3
+ James Cameron        |        3
+ Ridley Scott         |        3
+ George Lucas         |        3
+ Frank Darabont       |        2
+(10 rows)
+
+sebatapiaoviedo=# SELECT COUNT (DISTINCT nombre_actor) FROM reparto;
+ count 
+-------
+   831
+(1 row)
+
+sebatapiaoviedo=# SELECT título FROM peliculas WHERE año BETWEEN 1990 AND  1999;
+ERROR:  column "año" does not exist
+LINE 1: SELECT título FROM peliculas WHERE año BETWEEN 1990 AND  199...
+                                           ^
+sebatapiaoviedo=# SELECT título FROM peliculas WHERE año_estreno BETWEEN 1990 AND  1999;
+                   título                   
+--------------------------------------------
+ Forest Gump
+ Titanic
+ Cadena perpetua
+ Braveheart
+ La lista de Schindler
+ Toy Story
+ Eduardo Manostijeras
+ Salvar al soldado Ryan
+ American History X
+ El sexto sentido
+ Pulp Fiction
+ El silencio de los corderos
+ El club de la pelea
+ Parque Jurásico
+ Matrix
+ La milla verde
+ Seven
+ Terminator 2: el juicio final
+ Hombres de negro
+ El show de Truman
+ Toy Story 2
+ Pesadilla antes de navidad
+ Entrevista con el vampiro
+ El Padrino. Parte III
+ El profesional
+ American Beauty
+ Trainspotting
+ Star Wars. Episodio I: La amenaza fantasma
+ Mejor... imposible
+ Uno de los nuestros
+(30 rows)
+
+sebatapiaoviedo=# SELECT peliculas.título, reparto.nombre FROM peliculas INNER JOIN reparto ON peliculas.id = reparto.pelicula_id WHERE peliculas.año_estreno = 2001;
+ERROR:  column reparto.nombre does not exist
+LINE 1: SELECT peliculas.título, reparto.nombre FROM peliculas INNER...
+                                 ^
+sebatapiaoviedo=# SELECT peliculas.título, reparto.nombre_actor FROM peliculas INNER JOIN reparto ON peliculas.id = reparto.pelicula_id WHERE peliculas.año_estreno = 2001;
+sebatapiaoviedo=# SELECT peliculas.título, reparto.nombre_actor FROM peliculas INNER JOIN reparto ON peliculas.id = reparto.pelicula_id WHERE peliculas.año_estreno = 2001;
+sebatapiaoviedo=# SELECT reparto.nombre_actor FROM reparto WHERE pelicula_id IN (SELECT id FROM peliculas ORDER BY año_estreno DESC LIMIT 1);
+     nombre_actor     
+----------------------
+ Christian Bale
+ Heath Ledger
+ Aaron Eckhart
+ Michael Caine
+ Gary Oldman
+ Maggie Gyllenhaal
+ Morgan Freeman
+ Eric Roberts
+ Cillian Murphy
+ Anthony Michael Hall
+ Michael Jai White
+ William Fichtner
+ Edison Chen
+ Monique Curnen
+ Chin Han
+ Nestor Carbonell
+ Ritchie Coster
+ Keith Szarabajka
+ Colin McFarlane
+ Melinda McGraw
+ Nathan Gamble
+ Michael Vieau
+(22 rows)
+
+sebatapiaoviedo=# 
+
